@@ -1,0 +1,9 @@
+.st0 {
+  fill: #5F249F;
+}
+
+/* Morado original */
+path:not(.st0) {
+  fill: white;
+}
+
