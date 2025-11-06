@@ -1,14 +1,23 @@
-<mat-sidenav-container class="h-screen">
-  <mat-sidenav class="!bg-[#18181B] !rounded-none !custom-animation"
-    [style.width.px]="width()" opened mode="side">
-    <app-sidenav [collapsed]="collapsed()" />
-  </mat-sidenav>
-  <mat-sidenav-content [style.margin-left.px]="width()">
-    <app-header (onToggle)="collapsed.set(!collapsed())" />
+<div class="flex flex-col h-screen bg-[#09090B] text-white">
 
-    <div class="p-4 bg-[#09090B] min-h-screen text-white">
+  <!-- HEADER SUPERIOR -->
+  <header class="flex items-center justify-between bg-[#18181B] px-4 h-17 shadow-sm">
+     <app-header (onToggle)="collapsed.set(!collapsed())" />
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL (SIDENAV + CONTENIDO) -->
+  <div class="flex flex-1 overflow-hidden pl-6 pt-7 pb-7 ">
+    <!-- SIDENAV -->
+    <aside
+      class="!bg-[#18181B] transition-all duration-300 overflow-y-auto !rounded-md"
+      [style.width.px]="width()"
+    >
+      <app-sidenav [collapsed]="collapsed()" />
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="flex-1 overflow-y-auto px-8 bg-[#09090B]">
       <router-outlet />
-    </div>
-
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    </main>
+  </div>
+</div>
