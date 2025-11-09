@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { Mobiles } from './mobiles/mobiles';
 import { Home } from './home/home';
 import { Users } from './users/users';
 
@@ -16,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'mobiles',
-    component: Mobiles
+    loadChildren: () => import('./mobiles/mobiles.routes').then(m => m.routes)
   },
   {
     path: 'users',
