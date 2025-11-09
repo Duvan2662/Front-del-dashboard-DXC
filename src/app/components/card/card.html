@@ -1,0 +1,16 @@
+<a
+  [routerLink]="card.url"
+  class="block card mb-0 bg-[#18181B] text-white rounded-2xl p-4 sm:p-5 text-center transition-all duration-300 hover:bg-[#27272A] hover:shadow-lg cursor-pointer no-underline"
+>
+  <div class="flex flex-col items-center justify-center gap-3">
+    <span class="block text-gray-300 font-semibold text-base sm:text-lg">
+      {{ card.title }}
+    </span>
+    <div class="flex items-center justify-center rounded-full sm:w-20 sm:h-20">
+      <mat-icon
+        class="!text-[32px] sm:!text-[40px] !text-white !w-full !h-full !flex !items-center !justify-center">
+        {{ card.icon }}
+      </mat-icon>
+    </div>
+  </div>
+</a>

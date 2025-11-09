@@ -23,5 +23,4 @@ export const routes: Routes = [
     component: Users
   }
 
-
 ];
