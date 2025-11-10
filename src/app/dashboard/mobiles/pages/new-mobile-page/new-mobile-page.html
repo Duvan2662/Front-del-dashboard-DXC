@@ -1,1 +1,143 @@
-<p>new-mobile-page works!</p>
+<!-- Formulario -->
+<div class="max-w-md mx-auto mt-10 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-6">
+  <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6 text-center">
+    Nuevo dispositivo móvil
+  </h2>
+
+  <form [formGroup]="myform" (ngSubmit)="onSubmit()"  class="flex flex-col gap-4">
+
+    <!-- Campo Tipo -->
+    <div class="flex flex-col gap-2">
+      <label for="tipo" class="text-gray-700 dark:text-gray-200 font-medium">Tipo de dispositivo</label>
+      <input
+        id="tipo"
+        type="text"
+        formControlName="tipo"
+        class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
+        @if (isValidField('tipo')) {
+          <span class="text-red-500 text-sm mt-1 block">
+            El tipo de dispositivo debe de ser mayor de 5 caracteres.
+          </span>
+        }
+    </div>
+
+    <!-- Campo Nombre -->
+    <div class="flex flex-col gap-2">
+      <label for="nombre" class="text-gray-700 dark:text-gray-200 font-medium">Nombre del dispositivo</label>
+      <input
+      id="nombre"
+      type="text"
+      maxlength="33"
+      formControlName="nombre"
+      (keydown.space)="$event.preventDefault()"
+      class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
+    </div>
+
+    <!-- Campo Imei -->
+    <div class="flex flex-col gap-2">
+      <label for="imei1" class="text-gray-700 dark:text-gray-200 font-medium">IMEI 1</label>
+      <input
+        id="imei1"
+        type="number"
+        maxlength="15"
+        formControlName="imei1"
+        class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
+    </div>
+
+    <!-- Campo Imei2 -->
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-2">
+        <label for="imei2" class="text-gray-700 dark:text-gray-200 font-medium">IMEI 2</label>
+        <span class="text-[#5F249F] text-sm font-medium">(opcional)</span>
+      </div>
+      <input
+        id="imei2"
+        type="number"
+        maxlength="15"
+        formControlName="imei2"
+        class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+    </div>
+
+    <!-- Campo sistema operativo -->
+    <div class="flex flex-col gap-2 relative">
+      <label for="sistema_operativo" class="text-gray-700 dark:text-gray-200 font-medium">Sistema operativo</label>
+
+      <select 
+        id="sistema_operativo" 
+        formControlName="sistema_operativo" 
+        class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F] appearance-none cursor-pointer">
+        <option value="" disabled selected>Selecciona un tipo</option>
+        <option value="android">Android</option>
+        <option value="ios">Ios</option>
+        <option value="harmonyos">HarmonyOS</option>
+      </select>
+
+      <!-- Ícono de flecha (chevron) -->
+      <div class="pointer-events-none absolute right-3 top-10 flex items-center">
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Botón Enviar -->
+    <button 
+      [disabled]="myform.invalid"
+      type="submit"
+      class="bg-[#5F249F] text-white font-medium rounded-lg py-2 mt-4 hover:bg-[#4B1E7A] transition-all focus:ring-2 focus:ring-[#7E3AC1] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+  Registrar dispositivo
+</button>
+
+  </form>
+</div>
+
+
+
+<div class="row">
+    <div class="col">
+
+        <span>Valid</span>
+        <pre>{{ myform.valid| json }}</pre>
+
+        <span>Pristine</span>
+        <pre>{{ myform.touched | json }}</pre>
+
+        <span>Touched</span>
+        <pre>{{ 'objeto' | json }}</pre>
+
+        <span>Value</span>
+        <pre>{{ myform.value | json }}</pre>
+
+
+        <span>Tipo dispositivo</span>
+        <pre>{{ myform.controls['tipo'].value| json }}</pre>
+        <span>Tipo dispositivo - Errors</span>
+        <pre>{{ myform.controls['tipo'].errors| json }}</pre>
+
+
+        <span>Nombre dispositivo</span>
+        <pre>{{ myform.controls['nombre'].value | json }}</pre>
+        <span>Nombre dispositivo - Errors</span>
+        <pre>{{ myform.controls['nombre'].errors| json }}</pre>
+
+
+        <span>IMEI1</span>
+        <pre>{{ myform.controls['imei1'].value | json }}</pre>
+        <span>IMEI1 - Errors</span>
+        <pre>{{ myform.controls['imei1'].errors| json }}</pre>
+
+
+        <span>Imei2</span>
+        <pre>{{ myform.controls['imei2'].value | json }}</pre>
+        <span>IMEI2 - Errors</span>
+        <pre>{{ myform.controls['imei2'].errors| json }}</pre>
+
+
+        <span>Sistema operativo</span>
+        <pre>{{ myform.controls['sistema_operativo'].value | json }}</pre>
+
+        <span>Sistema operativo - Errors</span>
+        <pre>{{ myform.controls['sistema_operativo'].errors| json }}</pre>
+
+    </div>
+</div>
