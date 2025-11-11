@@ -23,8 +23,8 @@ export class NewMobilePage {
       id: [0],
       tipo: ['', [Validators.required, Validators.maxLength(33),Validators.minLength(5)]],
       nombre: ['', [Validators.required, Validators.maxLength(33),Validators.minLength(5),Validators.pattern(/^[^\s]+$/)]],
-      imei1: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(15),Validators.pattern('^[0-9]*$')]], 
-      imei2: ['', [Validators.maxLength(15), Validators.minLength(15),Validators.pattern('^[0-9]*$')]],
+      imei1: ['', [Validators.required, Validators.pattern(/^\d{15}$/)]],
+      imei2: ['', [Validators.pattern(/^\d{15}$/)]],
       sistema_operativo: ['', Validators.required]
     });
   }
@@ -37,5 +37,34 @@ export class NewMobilePage {
   public isValidField = (field:string) => {
     return this.validatorService.isValidField(this.myform,field)
   }
+
+  public getFieldError(field: string): string | null {
+  const control = this.myform.get(field);
+  if (!control || !control.errors) return null;
+
+  const errors = control.errors;
+
+  // --- mensajes genéricos ---
+  if (errors['required']) return 'Este campo es obligatorio.';
+  if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres.`;
+  if (errors['maxlength']) return `No puede superar los ${errors['maxlength'].requiredLength} caracteres.`;
+
+  // --- mensajes específicos por patrón ---
+  if (errors['pattern']) {
+    switch (field) {
+      case 'nombre':
+        return 'El nombre no debe contener espacios.';
+      case 'imei1':
+        return 'El IMEI 1 debe tener exactamente 15 dígitos numéricos.';
+      case 'imei2':
+        return 'El IMEI 2 debe tener exactamente 15 dígitos numéricos.';
+    }
+  }
+
+  return null;
+  }
+
+
+
 
 }

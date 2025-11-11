@@ -12,11 +12,12 @@
       <input
         id="tipo"
         type="text"
+        maxlength="33"
         formControlName="tipo"
         class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
         @if (isValidField('tipo')) {
-          <span class="text-red-500 text-sm mt-1 block">
-            El tipo de dispositivo debe de ser mayor de 5 caracteres.
+          <span class="text-red-500 mt-1 block">
+            {{getFieldError('tipo')}}
           </span>
         }
     </div>
@@ -31,6 +32,11 @@
       formControlName="nombre"
       (keydown.space)="$event.preventDefault()"
       class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
+      @if (isValidField('nombre')) {
+          <span class="text-red-500 mt-1 block">
+            {{getFieldError('nombre')}}
+          </span>
+        }
     </div>
 
     <!-- Campo Imei -->
@@ -38,10 +44,16 @@
       <label for="imei1" class="text-gray-700 dark:text-gray-200 font-medium">IMEI 1</label>
       <input
         id="imei1"
-        type="number"
+        type="text"
+        inputmode="numeric"
         maxlength="15"
         formControlName="imei1"
         class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]" />
+        @if (isValidField('imei1')) {
+          <span class="text-red-500 mt-1 block">
+            {{getFieldError('imei1')}}
+          </span>
+        }
     </div>
 
     <!-- Campo Imei2 -->
@@ -52,19 +64,25 @@
       </div>
       <input
         id="imei2"
-        type="number"
+        type="text"
         maxlength="15"
+        inputmode="numeric"
         formControlName="imei2"
         class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+        @if (isValidField('imei2')) {
+          <span class="text-red-500 mt-1 block">
+            {{getFieldError('imei2')}}
+          </span>
+        }
     </div>
 
     <!-- Campo sistema operativo -->
     <div class="flex flex-col gap-2 relative">
       <label for="sistema_operativo" class="text-gray-700 dark:text-gray-200 font-medium">Sistema operativo</label>
 
-      <select 
-        id="sistema_operativo" 
-        formControlName="sistema_operativo" 
+      <select
+        id="sistema_operativo"
+        formControlName="sistema_operativo"
         class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F] appearance-none cursor-pointer">
         <option value="" disabled selected>Selecciona un tipo</option>
         <option value="android">Android</option>
@@ -78,10 +96,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
+      @if (isValidField('sistema_operativo')) {
+          <span class="text-red-500 mt-1 block">
+            {{getFieldError('sistema_operativo')}}
+          </span>
+        }
     </div>
 
     <!-- Botón Enviar -->
-    <button 
+    <button
       [disabled]="myform.invalid"
       type="submit"
       class="bg-[#5F249F] text-white font-medium rounded-lg py-2 mt-4 hover:bg-[#4B1E7A] transition-all focus:ring-2 focus:ring-[#7E3AC1] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
@@ -92,7 +115,7 @@
 </div>
 
 
-
+<!-- 
 <div class="row">
     <div class="col">
 
@@ -140,4 +163,4 @@
         <pre>{{ myform.controls['sistema_operativo'].errors| json }}</pre>
 
     </div>
-</div>
+</div> -->
