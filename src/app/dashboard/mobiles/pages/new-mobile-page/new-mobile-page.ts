@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsServices } from '../../services/validators.services';
 import { NotificationToastServices } from '../../../../services/notification-toast.services';
+import { MobileBD } from '../../interfaces/mobileBD.interface';
 
 
 @Component({
@@ -33,10 +34,47 @@ export class NewMobilePage {
   }
 
   public onSubmit() {
+
+    if (this.myform.valid) {
+    const mobile = this.currentMobile;
+    console.log(mobile);
+    this.myform.reset();
     this.notificationToastService.toastSuccess("Dispositivo");
-    console.log("Datos enviados");
-    
+    }
+
   }
+
+  public get currentMobile(): MobileBD {
+    const mobile = this.myform.value as MobileBD;
+
+    return {
+      ...mobile,
+      tipo: this.capitalizeEachWord(mobile.tipo),
+      nombre: mobile.nombre.trim().toUpperCase(),
+      imei1: mobile.imei1,
+      imei2: mobile.imei2,
+      sistema_operativo: this.capitalizeFirst(mobile.sistema_operativo)
+    };
+  }
+
+  // Primera letra en mayúscula de toda la frase
+  private capitalizeFirst(value: string): string {
+    if (!value) return '';
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
+
+  // Primera letra en mayúscula de cada palabra
+  private capitalizeEachWord(value: string): string {
+    if (!value) return '';
+    return value
+      .toLowerCase()
+      .split(' ')
+      .filter(word => word.trim() !== '')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+
 
 
   public isValidField = (field: string) => {
