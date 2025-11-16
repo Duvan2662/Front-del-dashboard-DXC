@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ValidatorsServices } from '../../services/validators.services';
 import { NotificationToastServices } from '../../../../services/notification-toast.services';
 import { MobileBD } from '../../interfaces/mobileBD.interface';
+import { MobilServices } from '../../services/mobil.services';
 
 
 @Component({
@@ -21,14 +22,14 @@ export class NewMobilePage {
   constructor(
     private fb: FormBuilder,
     private validatorService: ValidatorsServices,
-    private notificationToastService: NotificationToastServices
+    private notificationToastService: NotificationToastServices,
+    private mobilServices: MobilServices
   ) {
     this.myform = this.fb.group({
-      id: [0],
       tipo: ['', [Validators.required, Validators.maxLength(33), Validators.minLength(5)]],
       nombre: ['', [Validators.required, Validators.maxLength(33), Validators.minLength(5), Validators.pattern(/^[^\s]+$/)]],
       imei1: ['', [Validators.required, Validators.pattern(/^\d{15}$/)]],
-      imei2: ['', [Validators.pattern(/^\d{15}$/)]],
+      imei2: [, [Validators.pattern(/^\d{15}$/)]],
       sistema_operativo: ['', Validators.required]
     });
   }
@@ -37,6 +38,7 @@ export class NewMobilePage {
 
     if (this.myform.valid) {
     const mobile = this.currentMobile;
+    this.mobilServices.addMobile(mobile).subscribe();
     console.log(mobile);
     this.myform.reset();
     this.notificationToastService.toastSuccess("Dispositivo");
@@ -53,7 +55,7 @@ export class NewMobilePage {
       nombre: mobile.nombre.trim().toUpperCase(),
       imei1: mobile.imei1,
       imei2: mobile.imei2,
-      sistema_operativo: this.capitalizeFirst(mobile.sistema_operativo)
+      sistema_operativo: mobile.sistema_operativo
     };
   }
 
@@ -73,9 +75,6 @@ export class NewMobilePage {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
-
-
-
 
   public isValidField = (field: string) => {
     return this.validatorService.isValidField(this.myform, field)
