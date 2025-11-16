@@ -13,7 +13,7 @@ import { RouterOutlet } from "@angular/router";
 export class Mobiles {
   cards: CardInterface[] =[
     { title: 'Agregar dispositivo', icon: 'add', url: '/dashboard/mobiles/new-mobile'},
-    { title: 'Editar dispositivos', icon: 'edit', url: '/dashboard/edit-device'},
+    { title: 'Editar dispositivos', icon: 'edit', url: '/dashboard/mobiles/list'},
     { title: 'Dispositivos en uso', icon: 'bar_chart', url: '/dashboard/devices-in-use'},
   ]
 }
