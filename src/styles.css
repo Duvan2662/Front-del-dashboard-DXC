@@ -3,3 +3,88 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/* Cambiar color de los iconos del mat-sort-header */
+.mat-sort-header-arrow {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+.mat-sort-header-stem,
+.mat-sort-header-indicator,
+.mat-sort-header-pointer-left,
+.mat-sort-header-pointer-right {
+  color: white !important;
+  fill: white !important;
+  stroke: white !important;
+}
+
+
+
+
+/* Íconos del paginator (flechas, dropdown, etc.) */
+.mat-paginator-navigation-previous,
+.mat-paginator-navigation-next,
+.mat-paginator-navigation-first,
+.mat-paginator-navigation-last {
+  color: white !important;
+  fill: white !important;
+  stroke: white !important;
+}
+
+/* Iconos SVG dentro de esos botones */
+.mat-paginator-navigation-previous svg,
+.mat-paginator-navigation-next svg,
+.mat-paginator-navigation-first svg,
+.mat-paginator-navigation-last svg {
+  color: white !important;
+  fill: white !important;
+  stroke: white !important;
+}
+
+/* Texto del paginator (ej: "1 of 10") */
+.mat-paginator-range-label {
+  color: white !important;
+}
+
+/* Flecha del select (page size). */
+.mat-select-arrow {
+  color: white !important;
+  fill: white !important;
+}
+
+
+/* COLOR DE LOS BOTONES DEL PAGINATOR */
+.mat-mdc-paginator .mat-mdc-icon-button svg {
+  fill: white !important;
+  color: white !important;
+}
+
+/* Flechas del paginator */
+.mat-mdc-paginator .mat-mdc-paginator-navigation-button {
+  color: white !important;
+}
+
+/* Texto del rango "1 – 5 of 10" */
+.mat-mdc-paginator .mat-mdc-paginator-range-label {
+  color: white !important;
+}
+
+/* Select del paginator (Items per page) */
+.mat-mdc-paginator .mat-mdc-select-value,
+.mat-mdc-paginator .mat-mdc-select-value-text {
+  color: white !important;
+}
+
+/* Flecha del dropdown del select */
+.mat-mdc-paginator .mat-mdc-select-arrow svg {
+  fill: white !important;
+  color: white !important;
+}
+
+/* Borde del select */
+.mat-mdc-paginator .mdc-notched-outline__leading,
+.mat-mdc-paginator .mdc-notched-outline__notch,
+.mat-mdc-paginator .mdc-notched-outline__trailing {
+  border-color: white !important;
+}
+
