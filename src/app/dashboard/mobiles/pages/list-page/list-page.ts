@@ -11,19 +11,22 @@ import { MobileBD } from '../../interfaces/mobileBD.interface';
 import { MobilServices } from '../../services/mobil.services';
 import { PrettyNamePipe } from "../../../../pipes/prettyName.pipe";
 import { DefaultValuePipe } from "../../../../pipes/default-value.pipe";
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
 @Component({
   selector: 'app-list-page',
-  imports: [Toolbar, MatFormFieldModule, MatInputModule, MatTableModule, MatIcon, MatPaginatorModule, MatSortModule, PrettyNamePipe, DefaultValuePipe],
+  imports: [Toolbar, MatFormFieldModule, MatInputModule, MatTableModule, MatIcon, MatPaginatorModule, MatSortModule, PrettyNamePipe, DefaultValuePipe, ReactiveFormsModule],
   templateUrl: './list-page.html',
   styleUrl: './list-page.css',
 })
 export class ListPage {
 
 
-
+  searchControl = new FormControl('');
   columns: string[] = ['tipo', 'nombre', 'imei1', 'imei2', 'sistema_operativo',];
   displayedColumns = [...this.columns, 'actions'];
 
@@ -48,27 +51,33 @@ export class ListPage {
       this.pageSize = this.paginator.pageSize;
       this.loadMobiles();
     });
+
+    // Debounce para el buscador (espera antes de consultar al backend)
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(1000),        // espera 700 ms sin escribir
+        distinctUntilChanged()     // evita repetir misma búsqueda
+      )
+      .subscribe(value => {
+        this.pageIndex = 0;       // Reinicia a primera página
+        this.loadMobiles(value || '');
+      });
+
+
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
-  loadMobiles() {
+  loadMobiles(search: string = '') {
     const offset = this.pageIndex * this.pageSize;
 
-    this.mobilServices.getMobile(this.pageSize, offset).subscribe(res => {
-      this.dataSource.data = res.data;     // los mobiles
-      this.totalItems = res.total;         // total general de BD
-    });
-  }
-  accionDeFila(_t43: any) {
-    throw new Error('Method not implemented.');
+    this.mobilServices.getMobile(this.pageSize, offset, search)
+      .subscribe(res => {
+        this.dataSource.data = res.data;
+        this.totalItems = res.total;
+      });
   }
 
-
-
+  
 
 }

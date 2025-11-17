@@ -5,6 +5,7 @@ import { MobileBD } from '../interfaces/mobileBD.interface';
 import { Observable } from 'rxjs';
 import { ResponseMobileBD } from '../interfaces/responsemobile.interface';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,8 +18,8 @@ export class MobilServices {
   ){}
 
 
-  public getMobile = (limit:number,offset:number):Observable<ResponseMobileBD> => {
-    return this.http.get<ResponseMobileBD>(`${this.baseUrl}/mobiles?limit=${limit}&offset=${offset}`)
+  public getMobile = (limit:number,offset:number, search: string = ''):Observable<ResponseMobileBD> => {
+    return this.http.get<ResponseMobileBD>(`${this.baseUrl}/mobiles?limit=${limit}&offset=${offset}&search=${search}`)
   }
 
   public addMobile = (mobile:MobileBD):Observable<MobileBD> => {
