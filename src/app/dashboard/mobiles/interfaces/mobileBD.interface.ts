@@ -1,5 +1,5 @@
 export interface MobileBD {
-  id: number;
+  id: string;
   tipo: string;
   nombre: string;
   imei1: string;

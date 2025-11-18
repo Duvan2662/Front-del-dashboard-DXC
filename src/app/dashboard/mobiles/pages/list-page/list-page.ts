@@ -1,19 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
-import { Toolbar } from '../../../../components/toolbar/toolbar';
 import { MatIcon } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+
+import { Toolbar } from '../../../../components/toolbar/toolbar';
 import { MobileBD } from '../../interfaces/mobileBD.interface';
 import { MobilServices } from '../../services/mobil.services';
 import { PrettyNamePipe } from "../../../../pipes/prettyName.pipe";
 import { DefaultValuePipe } from "../../../../pipes/default-value.pipe";
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { ReactiveFormsModule } from '@angular/forms';
+import { NotificationToastServices } from '../../../../services/notification-toast.services';
+
+
+
 
 
 
@@ -25,14 +28,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class ListPage {
 
-
   searchControl = new FormControl('');
-  columns: string[] = ['tipo', 'nombre', 'imei1', 'imei2', 'sistema_operativo',];
+  columns: string[] = ['tipo', 'nombre', 'imei1', 'imei2', 'sistema_operativo'];
   displayedColumns = [...this.columns, 'actions'];
 
   dataSource = new MatTableDataSource<MobileBD>();
   totalItems: number = 0
-  pageSize: number = 10;
+  pageSize: number = 5;
   pageIndex: number = 0;
 
 
@@ -41,7 +43,8 @@ export class ListPage {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private mobilServices: MobilServices
+    private mobilServices: MobilServices,
+    private notificationToast: NotificationToastServices
   ) { }
 
   ngAfterViewInit() {
@@ -55,15 +58,13 @@ export class ListPage {
     // Debounce para el buscador (espera antes de consultar al backend)
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(1000),        // espera 700 ms sin escribir
+        debounceTime(1000),        // espera 1segundo para realizar la busqueda
         distinctUntilChanged()     // evita repetir misma búsqueda
       )
       .subscribe(value => {
         this.pageIndex = 0;       // Reinicia a primera página
         this.loadMobiles(value || '');
       });
-
-
     this.dataSource.sort = this.sort;
   }
 
@@ -78,6 +79,16 @@ export class ListPage {
       });
   }
 
-  
+  async delete(mobile: MobileBD) {
+    let confirmacion = await this.notificationToast.toastConfirm(mobile.nombre);
+    if (!confirmacion) return
+    this.mobilServices.deleteMobile(mobile.id).subscribe(res => {
+      this.loadMobiles(this.searchControl.value || '');
+    });
+  }
+  edit() {
+    throw new Error('Method not implemented.');
+  }
+
 
 }

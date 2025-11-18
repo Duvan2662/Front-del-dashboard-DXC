@@ -27,4 +27,9 @@ export class MobilServices {
   }
 
 
+  public deleteMobile = (id:string):Observable<MobileBD> => {
+    return this.http.delete<MobileBD>(`${this.baseUrl}/mobiles/${id}`)
+  }
+
+
 }
