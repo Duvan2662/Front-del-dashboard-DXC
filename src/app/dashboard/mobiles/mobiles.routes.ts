@@ -21,10 +21,6 @@ export const routes: Routes = [
   },
   {
     path: 'edit/:id',
-    component: NewMobilePage
-  },
-  {
-    path: ':id',
     component: MobilePage
   },
   {
