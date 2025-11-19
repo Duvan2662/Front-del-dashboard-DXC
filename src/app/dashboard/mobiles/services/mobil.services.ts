@@ -30,6 +30,10 @@ export class MobilServices {
     return this.http.post<MobileBD>(`${ this.baseUrl }/mobiles`, mobile);
   }
 
+  public updateMobil = (id:string,mobile:MobileBD):Observable<MobileBD> =>{
+    return this.http.patch<MobileBD>(`${this.baseUrl}/mobiles/${id}`, mobile);
+  }
+
 
   public deleteMobile = (id:string):Observable<MobileBD> => {
     return this.http.delete<MobileBD>(`${this.baseUrl}/mobiles/${id}`)

@@ -22,7 +22,7 @@ export class NotificationToastServices {
     });
     Toast.fire({
       icon: "success",
-      title: `${message} creado con éxito`,
+      title: `${message} con éxito`,
       background: '#5F249F',
       color: '#FFFFFF'
     });

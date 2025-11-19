@@ -41,7 +41,7 @@ export class NewMobilePage {
     this.mobilServices.addMobile(mobile).subscribe();
     console.log(mobile);
     this.myform.reset();
-    this.notificationToastService.toastSuccess("Dispositivo");
+    this.notificationToastService.toastSuccess("Dispositivo creado");
     }
 
   }

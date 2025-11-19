@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ValidatorsServices } from '../../services/validators.services';
 import { MobileDevice } from '../../interfaces/responsemobile.interface';
 import { MobilServices } from '../../services/mobil.services';
+import { MobileBD } from '../../interfaces/mobileBD.interface';
+import { NotificationToastServices } from '../../../../services/notification-toast.services';
 
 
 @Component({
@@ -21,13 +23,16 @@ export class MobilePage {
   qrImage!: string;
   createdAt!: string;
   updatedAt!: string;
+  titleOfPage:string = 'Dispositivo Móvil';
+  valorBoton:string = 'Editar'
 
 
   constructor(
     private fb: FormBuilder,
     private validatorService: ValidatorsServices,
     private route: ActivatedRoute,
-    private mobilServices: MobilServices
+    private mobilServices: MobilServices,
+    private notificationToastService:NotificationToastServices
   ) {
     this.myform = this.fb.group({
       tipo: ['', [Validators.required, Validators.maxLength(33), Validators.minLength(5)]],
@@ -44,7 +49,6 @@ export class MobilePage {
       const id = params.get('id');
       if (id) {
         this.mobilServices.getMobil(id).subscribe(res =>{
-
           this.mobile = res;      // guardas todo el objeto
           this.loadMobile(res);   // cargas el formulario
         })
@@ -80,20 +84,79 @@ export class MobilePage {
 
     return null;
   }
-
-
-  onSubmit() {
-  }
-
   public isValidField = (field: string) => {
     return this.validatorService.isValidField(this.myform, field)
   }
 
-  enableEditMode() {
-    this.isEditing = true;
-    this.myform.enable();
+
+  public onClickButton(): void {
+  if (this.isEditing) {
+    this.onSave();
+    return;
   }
 
+  this.enableEditMode();
+}
+
+private enableEditMode(): void {
+  this.isEditing = true;
+  this.titleOfPage = 'Editar Dispositivo';
+  this.valorBoton = 'Guardar';
+  this.myform.enable();
+}
+
+private onSave(): void {
+
+  if (this.myform.invalid) {
+    this.myform.markAllAsTouched();
+    return;
+  }
+
+  const mobile = this.currentMobile;
+  const id = this.mobile!.id;
+
+  this.mobilServices.updateMobil(id, mobile).subscribe(() => {
+
+    this.notificationToastService.toastSuccess('Dispositivo actualizado');
+
+    this.isEditing = false;
+    this.titleOfPage = 'Dispositivo Móvil';
+    this.valorBoton = 'Editar';
+    this.myform.disable();
+
+    this.mobilServices.getMobil(id).subscribe(res => {
+      this.mobile = res;
+      this.loadMobile(res);
+    });
+
+  });
+}
+
+
+
+  public get currentMobile(): MobileBD {
+      const mobile = this.myform.value as MobileBD;
+
+      return {
+        ...mobile,
+        tipo: this.capitalizeEachWord(mobile.tipo),
+        nombre: mobile.nombre.trim().toUpperCase(),
+        imei1: mobile.imei1,
+        imei2: mobile.imei2,
+        sistema_operativo: mobile.sistema_operativo
+      };
+  }
+
+  // Primera letra en mayúscula de cada palabra
+  private capitalizeEachWord(value: string): string {
+    if (!value) return '';
+    return value
+      .toLowerCase()
+      .split(' ')
+      .filter(word => word.trim() !== '')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 
   loadMobile(mobile: MobileDevice) {
 
@@ -110,6 +173,17 @@ export class MobilePage {
       this.createdAt = mobile.created_at;
       this.updatedAt = mobile.updated_at;
   }
+
+
+  onSubmit() {
+  }
+
+
+
+
+
+
+
 
 
 }
