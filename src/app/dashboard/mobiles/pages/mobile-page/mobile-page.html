@@ -16,7 +16,6 @@
             <input formControlName="tipo"
               class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
           </div>
-
           <div class="flex flex-col gap-6 col-span-2 md:col-span-1">
             <label class="text-gray-700 dark:text-gray-200 font-medium">Nombre del dispositivo</label>
             <input formControlName="nombre"
@@ -60,36 +59,37 @@
           Descargar
         </button>
       </div>
-      </div>
-    <div class="f20">
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div class="flex flex-col lg:flex-row gap-10">
 
-        <div class="flex flex-col gap-2">
-          <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de creación</label>
-          <input disabled
-            class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
+      <div class="flex-1 flex flex-col gap-10 ng-untouched ng-pristine">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div class="flex flex-col gap-2 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de creación</label>
+            <input disabled class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
+          </div>
+
+          <div class="flex flex-col gap-2 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de última actualización</label>
+            <input disabled class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
+          </div>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de última actualización</label>
-          <input disabled
-            class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
-        </div>
-
       </div>
 
-      <div class="flex justify-end gap-4 mt-4">
-        <button
-          class="bg-[#33CB93] hover:bg-[#5CD7AE] text-white font-medium px-4 py-2 rounded-lg">
+      <div class="w-[288px] flex flex-row items-center gap-3 mt-6">
+        <button class="flex-1 bg-[#33CB93] hover:bg-[#5CD7AE] text-white font-medium px-4 py-2 rounded-lg">
           Editar
         </button>
-        <button
-          class="bg-[#B91C1C] hover:bg-[#C44E4E] text-white font-medium px-4 py-2 rounded-lg">
+
+        <button class="flex-1 bg-[#B91C1C] hover:bg-[#C44E4E] text-white font-medium px-4 py-2 rounded-lg">
           Eliminar
         </button>
       </div>
 
     </div>
-    </div>
+
+  </div>
 </div>
