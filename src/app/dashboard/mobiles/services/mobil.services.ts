@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { MobileBD } from '../interfaces/mobileBD.interface';
 import { Observable } from 'rxjs';
-import { ResponseMobileBD } from '../interfaces/responsemobile.interface';
+import { MobileDevice, ResponseMobileBD } from '../interfaces/responsemobile.interface';
 
 
 @Injectable({
@@ -18,8 +18,12 @@ export class MobilServices {
   ){}
 
 
-  public getMobile = (limit:number,offset:number, search: string = ''):Observable<ResponseMobileBD> => {
-    return this.http.get<ResponseMobileBD>(`${this.baseUrl}/mobiles?limit=${limit}&offset=${offset}&search=${search}`)
+  public getMobileWhitPagination = (limit:number,offset:number, search: string = ''):Observable<ResponseMobileBD> => {
+    return this.http.get<ResponseMobileBD>(`${this.baseUrl}/mobiles?limit=${limit}&offset=${offset}&search=${search}`);
+  }
+
+  public getMobil = (param:string):Observable<MobileDevice> => {
+    return this.http.get<MobileDevice>(`${this.baseUrl}/mobiles/${param}`);
   }
 
   public addMobile = (mobile:MobileBD):Observable<MobileBD> => {

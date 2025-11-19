@@ -1,187 +1,95 @@
-<div class="w-full mt-8">
-  <div class=" bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-lg flex flex-col gap-6 w-full">
+<div class="w-full">
+  <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-lg flex flex-col gap-6 w-full">
 
-    <!-- Título -->
     <div class="font-semibold text-2xl text-gray-800 dark:text-white">
-      Editar dispositivo móvil
+      Dispositivo Móvil
     </div>
 
+    <div class="flex flex-col lg:flex-row gap-10">
 
+      <form [formGroup]="myform" class="flex-1 flex flex-col gap-10">
 
-  <form [formGroup]="myform">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 qr-break">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-      <!-- Campos del dispositivo -->
-      <div class="flex flex-col gap-6">
-
-        <!-- Tipo y Nombre -->
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="flex flex-col gap-2 w-full">
-            <label for="tipo" class="text-gray-700 dark:text-gray-200 font-medium">Tipo de dispositivo</label>
-            <input
-              id="tipo"
-              type="text"
-              maxlength="33"
-              formControlName="tipo"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-            @if (isValidField('tipo')) {
-              <span class="text-red-500 mt-1 block">
-                {{getFieldError('tipo')}}
-              </span>
-            }
+          <div class="flex flex-col gap-6 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">Tipo de dispositivo</label>
+            <input formControlName="tipo"
+              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
           </div>
 
-          <div class="flex flex-col gap-2 w-full">
-            <label for="nombre" class="text-gray-700 dark:text-gray-200 font-medium">Nombre del dispositivo</label>
-            <input
-              id="nombre"
-              type="text"
-              maxlength="33"
-              formControlName="nombre"
-              (keydown.space)="$event.preventDefault()"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-            @if(isValidField('nombre')) {
-              <span class="text-red-500 mt-1 block">
-                {{getFieldError('nombre')}}
-              </span>
-            }
+          <div class="flex flex-col gap-6 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">Nombre del dispositivo</label>
+            <input formControlName="nombre"
+              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
           </div>
+
+          <div class="flex flex-col gap-6 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">IMEI 1</label>
+            <input formControlName="imei1"
+              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
+          </div>
+
+          <div class="flex flex-col gap-6 col-span-2 md:col-span-1">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">IMEI 2 (opcional)</label>
+            <input formControlName="imei2"
+              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
+          </div>
+
+          <div class="flex flex-col gap-6 col-span-2">
+            <label class="text-gray-700 dark:text-gray-200 font-medium">Sistema operativo</label>
+            <select formControlName="sistema_operativo"
+              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white">
+              <option value="">Selecciona una opción</option>
+              <option value="Android">Android</option>
+              <option value="Ios">Ios</option>
+              <option value="HarmonyOS">HarmonyOS</option>
+            </select>
+          </div>
+
+        </div>
+      </form>
+      <div class="flex flex-col items-center">
+        <label class="text-gray-700 dark:text-gray-200 font-medium mb-2">Imagen QR del dispositivo móvil</label>
+
+        <div class="border border-gray-700 rounded-lg p-4 bg-[#09090B] w-56 h-56 md:w-72 md:h-72 flex items-center justify-center">
+          <img [src]="qrImage" alt="QR" class="w-full h-full object-contain" />
         </div>
 
-        <!-- IMEI 1 y 2 -->
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="flex flex-col gap-2 w-full">
-            <label for="imei1" class="text-gray-700 dark:text-gray-200 font-medium">IMEI 1</label>
-            <input
-              id="imei1"
-              type="text"
-              inputmode="numeric"
-              maxlength="15"
-              formControlName="imei1"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-            @if (isValidField('imei1')) {
-              <span class="text-red-500 mt-1 block">
-                {{getFieldError('imei1')}}
-              </span>
-            }
-          </div>
+        <button
+          class="mt-3 bg-[#5F249F] hover:bg-[#4B1E7A] text-white font-medium text-sm px-4 py-2 rounded-lg">
+          Descargar
+        </button>
+      </div>
+      </div>
+    <div class="f20">
 
-          <div class="flex flex-col gap-2 w-full">
-            <div class="flex items-center gap-2">
-              <label for="imei2" class="text-gray-700 dark:text-gray-200 font-medium">IMEI 2</label>
-              <span class="text-[#5F249F] text-sm font-medium">(opcional)</span>
-            </div>
-            <input
-              id="imei2"
-              type="text"
-              maxlength="15"
-              inputmode="numeric"
-              formControlName="imei2"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-            @if (isValidField('imei2')) {
-              <span class="text-red-500 mt-1 block">
-                {{getFieldError('imei2')}}
-              </span>
-            }
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de creación</label>
+          <input disabled
+            class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
         </div>
 
-        <!-- Sistema operativo -->
-        <div class="flex flex-col gap-2 w-full relative">
-          <label for="sistema_operativo" class="text-gray-700 dark:text-gray-200 font-medium">Sistema operativo</label>
-          <select
-            id="sistema_operativo"
-            formControlName="sistema_operativo"
-            class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F] appearance-none cursor-pointer"
-          >
-            <option value="" disabled selected>Selecciona una opción</option>
-            <option value="Android">Android</option>
-            <option value="Ios">Ios</option>
-            <option value="HarmonyOS">HarmonyOS</option>
-          </select>
-
-          <div class="pointer-events-none absolute right-3 top-10 flex items-center">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-          @if (isValidField('sistema_operativo')) {
-            <span class="text-red-500 mt-1 block">
-              {{getFieldError('sistema_operativo')}}
-            </span>
-          }
-        </div>
-
-        <!-- Fecha de creacion y actualizacion -->
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="flex flex-col gap-2 w-full">
-            <label for="fechaCreacion" class="text-gray-700 dark:text-gray-200 font-medium">Fecha de creación</label>
-            <input
-              id="fechaCreacion"
-              type="text"
-              maxlength="33"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-          </div>
-
-          <div class="flex flex-col gap-2 w-full">
-            <label for="ultimaActualizacion" class="text-gray-700 dark:text-gray-200 font-medium">Fecha de ultima actualización</label>
-            <input
-              id="nombre"
-              type="text"
-              maxlength="33"
-              formControlName="nombre"
-              (keydown.space)="$event.preventDefault()"
-              class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white focus:outline-none focus:ring-2 focus:ring-[#5F249F]"
-            />
-          </div>
-        </div>
-
-        <!-- Botones Editar y Eliminar -->
-        <div class="flex justify-end gap-4 mt-6">
-
-          <button
-            class="bg-[#33CB93] hover:bg-[#5CD7AE] cursor-pointer no-underline transition text-white font-medium px-4 py-2 rounded-lg"
-          >
-          Editar
-          </button>
-
-          <button
-            class="bg-[#B91C1C] hover:bg-[#C44E4E] cursor-pointer no-underline transition text-white font-medium px-4 py-2 rounded-lg"
-          >
-          Eliminar
-          </button>
-
+        <div class="flex flex-col gap-2">
+          <label class="text-gray-700 dark:text-gray-200 font-medium">Fecha de última actualización</label>
+          <input disabled
+            class="border border-gray-700 rounded-lg px-3 py-2 bg-[#09090B] text-white" />
         </div>
 
       </div>
 
-
-      <!-- Imagen QR -->
-      <div class="flex flex-col items-center justify-start mt-4 md:mt-0 md:top-4">
-        <label class="text-gray-700 dark:text-gray-200 font-medium mb-2">Imagen Qr del dispositivo móvil</label>
-        <div class="border border-gray-700 rounded-lg p-4 bg-[#09090B] w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 flex justify-center items-center">
-          <img
-            src="http://localhost:3000/qr/34811672-500b-4aa9-a98a-7baca26af390.png"
-            alt="QR"
-            class="w-full h-full object-contain"
-          />
-        </div>
+      <div class="flex justify-end gap-4 mt-4">
         <button
-          class="mt-3 bg-[#5F249F] hover:bg-[#4B1E7A] transition-all text-white font-medium text-sm px-4 py-2 rounded-lg cursor-pointer"
-        >
-          Descargar
+          class="bg-[#33CB93] hover:bg-[#5CD7AE] text-white font-medium px-4 py-2 rounded-lg">
+          Editar
+        </button>
+        <button
+          class="bg-[#B91C1C] hover:bg-[#C44E4E] text-white font-medium px-4 py-2 rounded-lg">
+          Eliminar
         </button>
       </div>
 
     </div>
-  </form>
-
-
-
-  </div>
+    </div>
 </div>

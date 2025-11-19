@@ -75,7 +75,7 @@ export class ListPage {
   loadMobiles(search: string = '') {
     const offset = this.pageIndex * this.pageSize;
 
-    this.mobilServices.getMobile(this.pageSize, offset, search)
+    this.mobilServices.getMobileWhitPagination(this.pageSize, offset, search)
       .subscribe(res => {
         this.dataSource.data = res.data;
         this.totalItems = res.total;
