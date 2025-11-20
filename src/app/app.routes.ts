@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Page404 } from './shared/page404/page404';
 
 export const routes: Routes = [
   {
@@ -9,6 +10,10 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.routes').then(m => m.routes)
+  },
+  {
+    path: '404',
+    component: Page404
   },
   {
     path: '**',

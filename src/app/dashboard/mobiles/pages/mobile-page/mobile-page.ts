@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidatorsServices } from '../../services/validators.services';
 import { MobileDevice } from '../../interfaces/responsemobile.interface';
@@ -11,7 +11,7 @@ import { NotificationToastServices } from '../../../../services/notification-toa
 
 @Component({
   selector: 'app-mobile-page',
-  imports: [CommonModule, ReactiveFormsModule,],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './mobile-page.html',
   styleUrl: './mobile-page.css',
 })
@@ -32,7 +32,8 @@ export class MobilePage {
     private validatorService: ValidatorsServices,
     private route: ActivatedRoute,
     private mobilServices: MobilServices,
-    private notificationToastService:NotificationToastServices
+    private notificationToastService:NotificationToastServices,
+    private router: Router,
   ) {
     this.myform = this.fb.group({
       tipo: ['', [Validators.required, Validators.maxLength(33), Validators.minLength(5)]],
@@ -45,16 +46,25 @@ export class MobilePage {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.mobilServices.getMobil(id).subscribe(res =>{
-          this.mobile = res;      // guardas todo el objeto
-          this.loadMobile(res);   // cargas el formulario
-        })
-      }
-    });
-  }
+  this.route.paramMap.subscribe(params => {
+    const id = params.get('id');
+
+    if (id) {
+      this.mobilServices.getMobil(id).subscribe({
+        next: (res) => {
+          this.mobile = res;      // Guardas todo el objeto
+          this.loadMobile(res);   // Cargas el formulario
+        },
+        error: (err) => {
+          console.error('Error al obtener el dispositivo:', err);
+          // Redirigir a 404
+          this.router.navigate(['/404']);
+        }
+      });
+    }
+  });
+}
+
 
   downloadQR() {
   }
