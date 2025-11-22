@@ -18,13 +18,15 @@ import { NotificationToastServices } from '../../../../services/notification-toa
 export class MobilePage {
 
   myform: FormGroup;
-  isEditing : boolean = false;
-  mobile: MobileDevice| null  = null;
+  originalFormValues: any = null;
+
+  isEditing: boolean = false;
+  mobile: MobileDevice | null = null;
   qrImage!: string;
   createdAt!: string;
   updatedAt!: string;
-  titleOfPage:string = 'Dispositivo Móvil';
-  valorBoton:string = 'Editar'
+  titleOfPage: string = 'Dispositivo Móvil';
+  valorBoton: string = 'Editar'
 
 
   constructor(
@@ -32,7 +34,7 @@ export class MobilePage {
     private validatorService: ValidatorsServices,
     private route: ActivatedRoute,
     private mobilServices: MobilServices,
-    private notificationToastService:NotificationToastServices,
+    private notificationToastService: NotificationToastServices,
     private router: Router,
   ) {
     this.myform = this.fb.group({
@@ -46,24 +48,24 @@ export class MobilePage {
   }
 
   ngOnInit() {
-  this.route.paramMap.subscribe(params => {
-    const id = params.get('id');
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
 
-    if (id) {
-      this.mobilServices.getMobil(id).subscribe({
-        next: (res) => {
-          this.mobile = res;      // Guardas todo el objeto
-          this.loadMobile(res);   // Cargas el formulario
-        },
-        error: (err) => {
-          console.error('Error al obtener el dispositivo:', err);
-          // Redirigir a 404
-          this.router.navigate(['/404']);
-        }
-      });
-    }
-  });
-}
+      if (id) {
+        this.mobilServices.getMobil(id).subscribe({
+          next: (res) => {
+            this.mobile = res;      // Guardas todo el objeto
+            this.loadMobile(res);   // Cargas el formulario
+          },
+          error: (err) => {
+            console.error('Error al obtener el dispositivo:', err);
+            // Redirigir a 404
+            this.router.navigate(['/404']);
+          }
+        });
+      }
+    });
+  }
 
 
   downloadQR() {
@@ -100,61 +102,70 @@ export class MobilePage {
 
 
   public onClickButton(): void {
-  if (this.isEditing) {
-    this.onSave();
-    return;
+    if (this.isEditing) {
+      this.onSave();
+      return;
+    }
+
+    this.enableEditMode();
   }
 
-  this.enableEditMode();
-}
-
-private enableEditMode(): void {
-  this.isEditing = true;
-  this.titleOfPage = 'Editar Dispositivo';
-  this.valorBoton = 'Guardar';
-  this.myform.enable();
-}
-
-private onSave(): void {
-
-  if (this.myform.invalid) {
-    this.myform.markAllAsTouched();
-    return;
+  private enableEditMode(): void {
+    this.isEditing = true;
+    this.titleOfPage = 'Editar Dispositivo';
+    this.valorBoton = 'Guardar';
+    this.myform.enable();
   }
 
-  const mobile = this.currentMobile;
-  const id = this.mobile!.id;
+  private onSave(): void {
 
-  this.mobilServices.updateMobil(id, mobile).subscribe(() => {
+    if (!this.hasChanges()) {
+      // this.notificationToastService.toastInfo('No se realizaron cambios.');
+      this.isEditing = false;
+      this.titleOfPage = 'Dispositivo Móvil';
+      this.valorBoton = 'Editar';
+      this.myform.disable();
+      return;
+    }
 
-    this.notificationToastService.toastSuccess('Dispositivo actualizado');
+    if (this.myform.invalid) {
+      this.myform.markAllAsTouched();
+      return;
+    }
 
-    this.isEditing = false;
-    this.titleOfPage = 'Dispositivo Móvil';
-    this.valorBoton = 'Editar';
-    this.myform.disable();
+    const mobile = this.currentMobile;
+    const id = this.mobile!.id;
 
-    this.mobilServices.getMobil(id).subscribe(res => {
-      this.mobile = res;
-      this.loadMobile(res);
+    this.mobilServices.updateMobil(id, mobile).subscribe(() => {
+
+      this.notificationToastService.toastSuccess('Dispositivo actualizado');
+
+      this.isEditing = false;
+      this.titleOfPage = 'Dispositivo Móvil';
+      this.valorBoton = 'Editar';
+      this.myform.disable();
+
+      this.mobilServices.getMobil(id).subscribe(res => {
+        this.mobile = res;
+        this.loadMobile(res);
+      });
+
     });
-
-  });
-}
+  }
 
 
 
   public get currentMobile(): MobileBD {
-      const mobile = this.myform.value as MobileBD;
+    const mobile = this.myform.value as MobileBD;
 
-      return {
-        ...mobile,
-        tipo: this.capitalizeEachWord(mobile.tipo),
-        nombre: mobile.nombre.trim().toUpperCase(),
-        imei1: mobile.imei1,
-        imei2: mobile.imei2,
-        sistema_operativo: mobile.sistema_operativo
-      };
+    return {
+      ...mobile,
+      tipo: this.capitalizeEachWord(mobile.tipo),
+      nombre: mobile.nombre.trim().toUpperCase(),
+      imei1: mobile.imei1,
+      imei2: mobile.imei2,
+      sistema_operativo: mobile.sistema_operativo
+    };
   }
 
   // Primera letra en mayúscula de cada palabra
@@ -168,21 +179,30 @@ private onSave(): void {
       .join(' ');
   }
 
-  loadMobile(mobile: MobileDevice) {
+  GIloadMobile(mobile: MobileDevice) {
 
-      this.myform.patchValue({
-        tipo: mobile.tipo,
-        nombre: mobile.nombre,
-        imei1: mobile.imei1,
-        imei2: mobile.imei2,
-        sistema_operativo: mobile.sistema_operativo,
-      });
+    this.myform.patchValue({
+      tipo: mobile.tipo,
+      nombre: mobile.nombre,
+      imei1: mobile.imei1,
+      imei2: mobile.imei2,
+      sistema_operativo: mobile.sistema_operativo,
+    });
 
-      // asignar valores NO editables
-      this.qrImage = mobile.qr_image;
-      this.createdAt = mobile.created_at;
-      this.updatedAt = mobile.updated_at;
+    // Guardar copia del formulario original
+    this.originalFormValues = this.myform.getRawValue();
+
+    // asignar valores NO editables
+    this.qrImage = mobile.qr_image;
+    this.createdAt = mobile.created_at;
+    this.updatedAt = mobile.updated_at;
   }
+
+  private hasChanges(): boolean {
+    const current = this.myform.getRawValue();
+    return JSON.stringify(current) !== JSON.stringify(this.originalFormValues);
+  }
+
 
 
   onSubmit() {
